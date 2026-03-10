@@ -1,0 +1,8 @@
+{
+  "n_estimators": 450,
+  "max_depth": 6,
+  "learning_rate": 0.05,
+  "val_split": 0.2,
+  "risk_threshold_critical": 0.25,
+  "risk_threshold_low": 0.2
+}

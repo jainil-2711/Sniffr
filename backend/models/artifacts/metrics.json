@@ -1,0 +1,77 @@
+{
+  "macro_f1": 0.9146,
+  "f1_critical": 0.7573,
+  "recall_critical": 0.8211,
+  "precision_critical": 0.7027,
+  "weighted_f1": 0.9941,
+  "f1_by_class": {
+    "Clear": 0.9989,
+    "Critical": 0.7573,
+    "Low Risk": 0.9877
+  },
+  "confusion_matrix": [
+    [
+      7129,
+      9,
+      2
+    ],
+    [
+      1,
+      78,
+      16
+    ],
+    [
+      4,
+      24,
+      1841
+    ]
+  ],
+  "auc": 0.9941,
+  "train_size": 45519,
+  "val_size": 9104,
+  "per_class": {
+    "Clear": {
+      "precision": 0.9992991309223437,
+      "recall": 0.9984593837535014,
+      "f1-score": 0.998879080846294,
+      "support": 7140.0
+    },
+    "Critical": {
+      "precision": 0.7027027027027027,
+      "recall": 0.8210526315789474,
+      "f1-score": 0.7572815533980582,
+      "support": 95.0
+    },
+    "Low Risk": {
+      "precision": 0.9903173749327595,
+      "recall": 0.9850187265917603,
+      "f1-score": 0.9876609442060086,
+      "support": 1869.0
+    },
+    "accuracy": 0.9938488576449912,
+    "macro avg": {
+      "precision": 0.8974397361859353,
+      "recall": 0.9348435806414029,
+      "f1-score": 0.9146071928167868,
+      "support": 9104.0
+    },
+    "weighted avg": {
+      "precision": 0.9943602510206082,
+      "recall": 0.9938488576449912,
+      "f1-score": 0.9940549966538208,
+      "support": 9104.0
+    }
+  },
+  "classes": [
+    "Clear",
+    "Critical",
+    "Low Risk"
+  ],
+  "best_iteration": 116,
+  "best_crit_threshold": 0.075,
+  "smote_applied": true,
+  "calibration": "weight_boosted",
+  "critical_boost": 5.0,
+  "full_data_training": true,
+  "leakage_free": true
+}
