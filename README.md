@@ -86,19 +86,6 @@ Raw XGBoost probabilities collapse near 0 or 1 at high accuracy. A 6-component w
 
 All entity risk scores use **IQR-based thresholds** from training data only. Unseen entities fall back to the overall historical Critical rate (~1.04%).
 
-### XGBoost Configuration
-
-```
-objective       : multi:softprob (3 classes)
-n_estimators    : 600 (with early stopping, rounds=30)
-max_depth       : 6
-learning_rate   : 0.05
-subsample       : 0.8
-colsample_bytree: 0.8
-min_child_weight: 5
-reg_alpha/lambda: 0.1 / 1.0  (L1 + L2 regularisation)
-```
-
 ### Anomaly Detection (Rule-based, independent of ML)
 
 Six anomaly flags, each contributing +1 to composite score (0–6):
@@ -146,6 +133,17 @@ CN accounts for 50.9% of shipments and 65.9% of Critical cases. DE has the highe
 
 ## 5. Working Demo
 
+### Environment Setup
+
+Create a `.env` file in the **backend directory** and paste the following configuration:
+
+```env
+MONGO_URI=mongodb+srv://db_user:smartrisk@smartrisk.3amckfd.mongodb.net/smartrisk?retryWrites=true&w=majority&appName=SmartRisk
+MONGO_DB=smartrisk
+SECRET_KEY=smartrisk-dev-secret-2026
+ANTHROPIC_API_KEY=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
+```
+
 ### Quick Start (Local)
 
 ```bash
@@ -183,18 +181,6 @@ docker-compose up --build
 
 ---
 
-## 6. API Reference
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/status` | Health check + training progress |
-| POST | `/api/train` | Train on Historical_Data.csv (or upload custom) |
-| POST | `/api/predict` | Upload real-time CSV, returns risk scores |
-| GET | `/api/metrics` | Model validation metrics |
-| GET | `/api/feature-importance` | Ranked feature importances |
-| GET | `/api/model-config` | Get/update hyperparameter config |
-| GET | `/api/download` | Download predictions_output.csv |
-
 ### Output Format (`predictions_output.csv`)
 
 | Column | Description |
@@ -215,23 +201,31 @@ docker-compose up --build
 ```
 SmartRisk/
 ├── backend/
-│   ├── app.py                      ← Flask REST API
+│   ├── app.py
 │   ├── requirements.txt
 │   ├── Dockerfile
+│   ├── check_dependencies.py
+│   ├── db_setup.py
+│   ├── train_now.py
 │   ├── data/
-│   │   ├── Historical_Data.csv     ← training data (Jan–Sep 2020)
-│   │   └── Real-Time_Data.csv      ← inference data (Apr–Jun 2021)
+│   │   └── Historical_Data.csv
 │   ├── core/
-│   │   ├── feature_engineer.py     ← 16 features + anomaly detection
-│   │   ├── trainer.py              ← leakage-free XGBoost training
-│   │   ├── predictor.py            ← hybrid scoring + risk classification
-│   │   └── explainer.py            ← rule-based explainability
+│   │   ├── feature_engineer.py
+│   │   ├── trainer.py
+│   │   ├── predictor.py
+│   │   └── explainer.py
 │   ├── utils/
-│   │   └── model_manager.py        ← artifact save/load
+│   │   ├── mongo.py
+│   │   └── model_manager.py
 │   └── models/artifacts/           ← saved model files (auto-created)
 ├── frontend/
-│   ├── App.jsx                     ← full React UI
+│   ├── App.jsx
+│   ├── index.html
+│   ├── main.jsx
+│   ├── package-lock.json
+│   ├── vite.config.js
 │   └── package.json
+├── Real-Time_Data.csv
 ├── docker-compose.yml
 └── README.md
 ```
@@ -239,11 +233,16 @@ SmartRisk/
 ## Requirements
 
 ```
-flask>=2.0
-flask-cors
-pandas
-numpy
-scikit-learn
-xgboost>=1.6
-joblib
+flask>=3.0.0
+flask-cors>=4.0.0
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+xgboost>=2.0.0
+joblib>=1.3.0
+pymongo>=4.6.0
+dnspython>=2.4.0
+python-dotenv>=1.0.0
+requests>=2.31.0
+imbalanced-learn>=0.11.0
 ```
